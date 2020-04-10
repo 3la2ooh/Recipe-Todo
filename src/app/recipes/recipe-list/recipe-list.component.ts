@@ -8,7 +8,8 @@ import { Recipe } from '../recipe.model'
 })
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [
-    new Recipe("A Test Recipe", "This is simple a test.", "https://upload.wikimedia.org/wikipedia/commons/8/81/Nigella_Lawson%E2%80%99s_red_kidney_bean_dip.jpg")
+    new Recipe("A Test Recipe", "This is simple a test.", "https://upload.wikimedia.org/wikipedia/commons/8/81/Nigella_Lawson%E2%80%99s_red_kidney_bean_dip.jpg"),
+    new Recipe("Another Test Recipe", "This is another simple a test.", "https://upload.wikimedia.org/wikipedia/commons/8/81/Nigella_Lawson%E2%80%99s_red_kidney_bean_dip.jpg")
   ];
 
   @Output() recipeDetail = new EventEmitter<Recipe>();
