@@ -1,5 +1,7 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { Recipe } from './recipe.model';
+import { Ingredient } from '../shared/ingredient.model';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
 export class RecipeService {
@@ -18,9 +20,15 @@ export class RecipeService {
             "https://upload.wikimedia.org/wikipedia/commons/8/81/Nigella_Lawson%E2%80%99s_red_kidney_bean_dip.jpg",
             [{name: "test ingredient", amount: 3}]
         )
-      ];
+    ];
+
+    constructor(private shoppingListService: ShoppingListService) {}
 
     getRecipes() {
         return this.recipes.slice();
+    }
+
+    addIngredientsToShoppingList(newIngredients: Ingredient[]) {
+        this.shoppingListService.addIngredients(newIngredients);
     }
 }
