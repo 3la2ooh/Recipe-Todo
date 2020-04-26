@@ -7,10 +7,5 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderComponent {
     collapsed = true;
-
-    @Output() clickedButton = new EventEmitter<string>();
-
-    onSelect(selected: string) {
-        this.clickedButton.emit(selected);
-    }
+    
 }

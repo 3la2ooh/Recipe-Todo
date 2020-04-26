@@ -31,4 +31,16 @@ export class RecipeService {
     addIngredientsToShoppingList(newIngredients: Ingredient[]) {
         this.shoppingListService.addIngredients(newIngredients);
     }
+
+    getRecipe(index: number): Recipe {
+        return this.recipes[index];
+    }
+
+    getRecipeID(requestedRecipe: Recipe) {
+        for(let i = 0; i < this.recipes.length; i++) {
+            if (requestedRecipe === this.recipes[i]) {
+                return i;
+            }
+        }
+    }
 }
