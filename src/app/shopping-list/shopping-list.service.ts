@@ -1,43 +1,72 @@
 import { Injectable } from "@angular/core";
-import { Subject } from 'rxjs';
+import { Subject } from "rxjs";
 
-import { Ingredient } from '../shared/ingredient.model';
+import { Ingredient } from "../shared/ingredient.model";
 
 @Injectable()
 export class ShoppingListService {
-    ingredientsChanged = new Subject<Ingredient[]>();
-    startedEditing = new Subject<number>();
+  ingredientsChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
 
-    private ingredients: Ingredient[] = [
-        new Ingredient("Apples", 5),
-        new Ingredient("Tomatoes", 4)
-    ];
+  private ingredients: Ingredient[] = [];
 
-    getIngredients() {
-        return this.ingredients.slice();
+  getIngredients() {
+    return this.ingredients.slice();
+  }
+
+  getIngredient(index: number) {
+    return this.ingredients[index];
+  }
+
+  addIngredient(newIngredient: Ingredient) {
+    for (const ingredient of this.ingredients) {
+      if (ingredient.name === newIngredient.name) {
+        ingredient.amount += newIngredient.amount;
+        return;
+      }
+    }
+    this.ingredients.push(newIngredient);
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  addIngredients(newIngredients: Ingredient[]) {
+    let indexes = [];
+    for (const [index1, newIngredient] of newIngredients.entries()) {
+      for (const ingredient of this.ingredients) {
+        console.log(index1);
+        console.log(newIngredient);
+        console.log(ingredient);
+        if (newIngredient.name === ingredient.name) {
+          indexes.push(+index1);
+          ingredient.amount += +newIngredients[index1].amount;
+        }
+      }
     }
 
-    getIngredient(index: number) {
-        return this.ingredients[index];
-    } 
-
-    addIngredient(newIngredient: Ingredient) {
-        this.ingredients.push(newIngredient);
-        this.ingredientsChanged.next(this.ingredients.slice());
+    if (indexes) {
+      for (let i = indexes.length - 1; i >= 0; i--) {
+        newIngredients.splice(i, 1);
+      }
     }
 
-    addIngredients(newIngredients: Ingredient[]) {
-        this.ingredients.push(...newIngredients);
-        this.ingredientsChanged.next(this.ingredients.slice());
-    }
+    this.ingredients.push(...newIngredients);
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
 
-    updateIngredient(index: number, newIngredient: Ingredient) {
-        this.ingredients[index] = newIngredient;
-        this.ingredientsChanged.next(this.ingredients.slice());
-    }
+  updateIngredient(index: number, newIngredient: Ingredient) {
+    this.ingredients[index] = newIngredient;
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
 
-    deleteIngredient(index: number) {
-        this.ingredients.splice(index, 1);
-        this.ingredientsChanged.next(this.ingredients.slice());
+  updateIngredients(ingredientArray: Ingredient[]) {
+    if (ingredientArray) {
+      this.ingredients = ingredientArray;
+      this.ingredientsChanged.next(this.ingredients.slice());
     }
+  }
+
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
 }
